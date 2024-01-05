@@ -1,9 +1,15 @@
+import { getServerSession } from 'next-auth'
 import Image from 'next/image'
+import { authOptions } from './utils/auth'
+import prisma from './utils/db'
+import Form from './components/Form'
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions)
   return (
   <>
     <section className="relative  z-10 full-width h-screen bg-red-300">
+     
     <div className="relative h-full full-width -z-10">
           <Image
             src="/emirates.jpg"
@@ -22,6 +28,7 @@ export default function Home() {
           <p className="text-white">
             Välkommen till Arsenal Göteborg officiella hemsida
           </p>
+          
         </div>
         <div className="absolute breakout -bottom-[11rem] flex gap-4">
   <div className="flex flex-col items-center bg-white p-6 border-2 border-gray-200  shadow-sm">
