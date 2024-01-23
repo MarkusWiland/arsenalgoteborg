@@ -1,6 +1,9 @@
 "use client"
 
+import { Input } from "@/components/ui/input";
 import { postData } from "../../../lib/action";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 export default function FormAddPost() {
     return (
@@ -8,10 +11,11 @@ export default function FormAddPost() {
             await postData(formData);
         }}>
  <div className="flex flex-col gap-2">
-    <input type="text" name="title" />
-        <textarea type="text" name="body" />
+    <Input type="text" name="title" placeHolder="Titel"/>
+    <Input type="text" name="title" placeHolder="Titel"/>
+        <Textarea type="text" name="body" placeHolder="Meddelande..."/>
     
-    <button type="submit">Skicka</button>
+    <Button type="submit">Skicka</Button>
  </div>
         </form>
     )

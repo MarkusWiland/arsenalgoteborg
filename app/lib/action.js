@@ -10,13 +10,12 @@ import { redirect } from "next/navigation";
         const session = await getServerSession(authOptions);
         const title = formData.get("title");
         const body = formData.get("body");
-       
-
         try {
             await prisma.post.create({
               data: {
                 title: title,
                 body: body,
+                
                 author: {
                   connect: {
                     email: session?.user?.email, 
@@ -36,7 +35,11 @@ import { redirect } from "next/navigation";
 
     export async function getPosts() {
         try {
-          const posts = await prisma.post.findMany();
+          const posts = await prisma.post.findMany({
+            orderBy: {
+              createdAt: 'desc',
+            },
+          });
       
           return posts;
         } catch (error) {
@@ -44,38 +47,16 @@ import { redirect } from "next/navigation";
           throw error;
         }
       }
-    export async function getPublishedPosts() {
+      export async function getSpelSchema() {
         try {
-          const publishedPosts = await prisma.post.findMany({
-            where: {
-              published: true,
-            },
-          });
+          const spelschemas = await prisma.spelschema.findMany();
       
-          // Return the array of published posts
-          return publishedPosts;
+          return spelschemas;
         } catch (error) {
-          // Handle errors
-          console.error("Error fetching published posts:", error);
+          console.error("Error fetching published spelschema:", error);
           throw error;
         }
       }
-
-      export async function getUnPublishedPosts() {
-        try {
-          const publishedPosts = await prisma.post.findMany({
-            where: {
-              published: false,
-            },
-          });
-      
-          return publishedPosts;
-        } catch (error) {
-          console.error("Error fetching published posts:", error);
-          throw error;
-        }
-      }
-      
       export async function deletePost(postId) {
         try {
           await prisma.post.delete({
@@ -89,3 +70,23 @@ import { redirect } from "next/navigation";
           throw error;
         }
       }
+      export async function editPost(postId, formData) {
+
+        try {
+          // Uppdatera inläggets body med det nya värdet
+          await prisma.post.update({
+            where: {
+              id: postId,
+            },
+            data: {
+              name: formData.name,
+              email: formData.email,
+              body: formData.body,
+            },
+          });
+          revalidatePath("/posts");
+          } catch (error) {
+          console.error('Error editing post:', error);
+          // Hantera eventuella fel här
+        }
+      };

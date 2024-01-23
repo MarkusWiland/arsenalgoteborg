@@ -3,9 +3,12 @@ import Image from 'next/image'
 import { authOptions } from './utils/auth'
 import prisma from './utils/db'
 import Form from './components/Form'
+import { get } from 'react-hook-form'
+import { getSpelSchema } from './lib/action'
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
+
   return (
   <>
     <section className="relative  z-10 full-width h-screen bg-red-300">

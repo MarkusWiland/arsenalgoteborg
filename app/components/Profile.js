@@ -32,10 +32,6 @@ export default function Profile({session}) {
         email: "",
       
       }
-
-  
- 
-
       const [values, setValues] = useState(initialValues);
     const handleChange = (e) => {
         const { name, value } = e.target;

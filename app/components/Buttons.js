@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button"
 import { signIn } from "next-auth/react"
 import { deletePost } from "../lib/action"
+import DialogButton from "./Dialog"
 
 export  function LogOut() {
 return (
@@ -24,3 +25,20 @@ export function DeleteButton({postId}) {
 <Button onClick={handleDelete}>X</Button>    )
     
     }
+
+    export function EditButton() {
+   
+      return (
+  <Button>Edit</Button>    )
+      
+      }
+
+      export function AddGameDay({post}) {
+   
+        return (
+          <DialogButton post={post}>
+
+    <Button>Lägg till speldag</Button>    
+          </DialogButton>)
+        
+        }

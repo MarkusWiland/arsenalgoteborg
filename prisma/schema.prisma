@@ -50,7 +50,20 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
-
+model Spelschema {
+ id                String  @id @default(cuid())
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @updatedAt
+  homeIcon String?
+  awayIcon String?
+  homeTeam String
+  awayTeam String
+  result String
+  gameDate DateTime
+  channel String
+  win Boolean @default(false)
+  podcast String?
+}
 model User {
   id            String    @id @default(cuid())
   name          String?
