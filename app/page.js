@@ -4,11 +4,12 @@ import { authOptions } from './utils/auth'
 import prisma from './utils/db'
 import Form from './components/Form'
 import { get } from 'react-hook-form'
-import { getSpelSchema } from './lib/action'
-
+import {  getNearestPastSpelSchema, getSpelSchema } from './lib/action'
+export const revalidate = 60 * 60 * 6 * 1000 
 export default async function Home() {
   const session = await getServerSession(authOptions)
-
+  const nearest = await getNearestPastSpelSchema()
+  console.log("spelschema", nearest)
   return (
   <>
     <section className="relative  z-10 full-width h-screen bg-red-300">
@@ -34,35 +35,38 @@ export default async function Home() {
           
         </div>
         <div className="absolute breakout -bottom-[11rem] flex gap-4">
-  <div className="flex flex-col items-center bg-white p-6 border-2 border-gray-200  shadow-sm">
-    <div className="flex items-center justify-around  w-full pb-6">
-      <h1 className="text-4xl font-semithin">1</h1>
-      <span className="text-4xl text-gray-400">:</span>
-      <h1 className="text-4xl font-semithin">1</h1>
-    </div>
-    <div className="flex items-center justify-center gap-6 w-full">
-      <div className="flex items-center flex-col">
-        <Image src="/arsenallogo.jpeg" width={50} height={50} alt="Markus Wiland" />
-        <h2 className="uppercase font-bold text-sm mt-2">Arsenal FC</h2>
-      </div>
-      <span className="text-sm text-gray-400">( 2 - 0 )</span>
-      <div className="flex items-center flex-col">
-        <Image src="/barcelona.png" width={50} height={50} alt="Markus Wiland"  />
-        <h2 className="uppercase font-bold text-sm mt-2">Barcelona FC</h2>
-      </div>
-    </div>
-    <div className="flex items-center pt-6">
-      <h1 className="text-sm italic font-bold">Emirates Stadium</h1>
-    </div>
-    <div className="flex items-center gap-2 pt-6">
-      <Image src="/emirates.jpg" width={50} height={50} alt="Markus Wiland" className="rounded-md border-2 border-gray-600" />
-      <div className="flex flex-col">
-        <h2 className="font-semibold text-sm">Champions League, Matchdag 6</h2>
-        <p className="text-gray-500 text-sm">Onsdag 8 December 2021, 21:00</p>
-      </div>
-      <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md">Läs</button>
-    </div>
-  </div>
+          
+              <div className="flex flex-col items-center bg-white p-6 border-2 border-gray-200  shadow-sm">
+              <div className="flex items-center justify-around  w-full pb-6">
+                <h1 className="text-4xl font-semithin">{nearest.homeScore}</h1>
+                <span className="text-4xl text-gray-400">:</span>
+                <h1 className="text-4xl font-semithin">{nearest.awayScore}</h1>
+              </div>
+              <div className="flex items-center justify-center gap-6 w-full">
+                <div className="flex items-center flex-col">
+                  <Image src="/arsenallogo.jpeg" width={50} height={50} alt="Markus Wiland" />
+                  <h2 className="uppercase font-bold text-sm mt-2">{nearest.homeTeam}</h2>
+                </div>
+                <span className="text-sm text-gray-400">( {nearest.halfTimeScoreHome} - {nearest.halfTimeScoreAway} )</span>
+                <div className="flex items-center flex-col">
+                  <Image src="/barcelona.png" width={50} height={50} alt="Markus Wiland"  />
+                  <h2 className="uppercase font-bold text-sm mt-2">{nearest.awayTeam}</h2>
+                </div>
+              </div>
+              <div className="flex items-center pt-6">
+                <h1 className="text-sm italic font-bold">Emirates Stadium</h1>
+              </div>
+              <div className="flex items-center gap-2 pt-6">
+                <Image src="/emirates.jpg" width={50} height={50} alt="Markus Wiland" className="rounded-md border-2 border-gray-600" />
+                <div className="flex flex-col">
+                  <h2 className="font-semibold text-sm">Champions League, Matchdag 6</h2>
+                  <p className="text-gray-500 text-sm">Onsdag 8 December 2021, 21:00</p>
+                </div>
+                <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md">Läs</button>
+              </div>
+            </div>
+          
+
 
   <div className="bg-white p-6 border-2 border-gray-200  shadow-sm">
   <div className="grid grid-cols-1 gap-6">

@@ -58,11 +58,21 @@ model Spelschema {
   awayIcon String?
   homeTeam String
   awayTeam String
-  result String
+  homeScore Int
+  halfTimeScoreHome Int
+  halfTimeScoreAway Int
+  awayScore Int
+  gameType String
   gameDate DateTime
   channel String
   win Boolean @default(false)
   podcast String?
+}
+model Trophies {
+    id            String    @id @default(cuid())
+    name String
+    won Int
+    lastTimeWon String
 }
 model User {
   id            String    @id @default(cuid())

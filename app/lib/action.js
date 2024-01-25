@@ -1,5 +1,5 @@
 "use server"
-
+import { format, subDays } from 'date-fns';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../utils/auth";
 import prisma from "../utils/db";
@@ -90,3 +90,36 @@ import { redirect } from "next/navigation";
           // Hantera eventuella fel här
         }
       };
+
+      export async function getNearestPastSpelSchema() {
+        try {
+          const currentDate = new Date(); // Dagens datum och tid
+          const formattedCurrentDate = format(currentDate, 'yyyy-MM-dd'); // Formatera dagens datum
+      
+          const nearestSchema = await prisma.spelschema.findFirst({
+            where: {
+              gameDate: {
+                lte: currentDate, // Hitta datum som är mindre än eller lika med dagens datum
+              },
+            },
+            orderBy: {
+              gameDate: 'desc', // Sortera i fallande ordning (senaste först)
+            },
+          });
+      
+          if (nearestSchema) {
+            // Det närmaste datumet bakåt har hittats
+            console.log(`Närmaste datumet bakåt är ${nearestSchema.gameDate}`);
+            return nearestSchema;
+          } else {
+            // Ingen matchande datum hittades
+            console.log('Ingen matchande datum hittades');
+            return null;
+          }
+        } catch (error) {
+          console.error("Error fetching nearest past spelschema:", error);
+          throw error;
+        } finally {
+          await prisma.$disconnect(); // Stäng anslutningen när du är klar
+        }
+      }
